@@ -1,0 +1,16 @@
+{
+  "name": "Cazual",
+  "short_name": "Cazual",
+  "description": "El espacio donde todo ocurre: conexiones, experiencias y comunidad.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B0B0B",
+  "theme_color": "#0B0B0B",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

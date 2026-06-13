@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #0b0b0b;
+  color: #ffffff;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #0b0b0b;
+  color: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(212, 175, 55, 0.25);
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-card/90 backdrop-blur-xl border border-white/10 shadow-glow;
+  }
+}
