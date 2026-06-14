@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-
 export interface Profile {
   slug: string;
   name: string;
@@ -265,14 +263,6 @@ export function getLocalStorageProfiles(): Profile[] {
 
 export function getAllProfiles(): Profile[] {
   return [...profiles, ...getLocalStorageProfiles()];
-}
-
-export function useAllProfiles(): Profile[] {
-  const [all, setAll] = useState<Profile[]>(() => [...profiles]);
-  useEffect(() => {
-    setAll(getAllProfiles());
-  }, []);
-  return all;
 }
 
 export function getProfileBySlug(slug: string) {

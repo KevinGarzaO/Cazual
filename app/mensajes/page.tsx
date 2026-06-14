@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { chats, type ChatThread } from "@/lib/chats";
-import { useAllProfiles } from "@/lib/profiles";
+import { useAllProfiles } from "@/lib/useAllProfiles";
 import { MessageCircle, ArrowLeft, Send } from "lucide-react";
 
 export default function MessagesPage() {

@@ -1,6 +1,6 @@
 import { ProfileCarousel } from "@/components/ProfileCarousel";
 import { SearchSection } from "@/components/SearchSection";
-import { useAllProfiles } from "@/lib/profiles";
+import { useAllProfiles } from "@/lib/useAllProfiles";
 
 export function ExploreContent() {
   const allProfiles = useAllProfiles();

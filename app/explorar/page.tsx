@@ -1,7 +1,7 @@
 "use client";
 
 import { ProfileCard } from "@/components/ProfileCard";
-import { useAllProfiles } from "@/lib/profiles";
+import { useAllProfiles } from "@/lib/useAllProfiles";
 
 export default function ExplorePage() {
   const allProfiles = useAllProfiles();

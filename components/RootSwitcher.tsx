@@ -5,7 +5,7 @@ import Link from "next/link";
 import { HomeHero } from "@/components/HomeHero";
 import { ExploreContent } from "@/components/ExploreContent";
 import { ProfileCarousel } from "@/components/ProfileCarousel";
-import { useAllProfiles } from "@/lib/profiles";
+import { useAllProfiles } from "@/lib/useAllProfiles";
 import { useSessionStore } from "@/lib/sessionStore";
 
 export default function RootSwitcher() {

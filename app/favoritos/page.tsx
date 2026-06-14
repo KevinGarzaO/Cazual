@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { ProfileCard } from "@/components/ProfileCard";
-import { useAllProfiles } from "@/lib/profiles";
+import { useAllProfiles } from "@/lib/useAllProfiles";
 import { useFavoritesStore } from "@/lib/useFavoritesStore";
 import Link from "next/link";
 
