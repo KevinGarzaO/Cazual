@@ -43,7 +43,7 @@ export default function PhysicalAndPersonality({
   return (
     <div className="space-y-4">
       <div>
-        <p className="text-base uppercase tracking-[0.5em] text-premium">
+        <p className="text-base uppercase tracking-[0.35em] text-premium">
           Físico y personalidad
         </p>
         <p className="mt-2 text-sm text-textSecondary">

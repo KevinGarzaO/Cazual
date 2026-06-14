@@ -1,7 +1,9 @@
 import { ProfileCarousel } from "@/components/ProfileCarousel";
-import { profiles } from "@/lib/profiles";
+import { SearchSection } from "@/components/SearchSection";
+import { useAllProfiles } from "@/lib/profiles";
 
 export function ExploreContent() {
+  const allProfiles = useAllProfiles();
   return (
     <main className="min-h-screen bg-background text-text">
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
@@ -18,7 +20,11 @@ export function ExploreContent() {
           </p>
         </div>
 
-        <ProfileCarousel profiles={profiles} />
+        <SearchSection />
+
+        <div className="mt-10">
+          <ProfileCarousel profiles={allProfiles} />
+        </div>
       </div>
     </main>
   );

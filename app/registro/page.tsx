@@ -1,10 +1,8 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { getSupabase } from "@/lib/supabaseClient";
+import Link from "next/link";
 
 export default function RegistrationPage() {
   const router = useRouter();
@@ -31,42 +29,26 @@ export default function RegistrationPage() {
     setError("");
 
     try {
-      // Registrar usuario en Supabase Auth
-      const { data, error: signUpError } = await getSupabase().auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            full_name: formData.name,
-            phone: formData.phone,
-            user_type: userType,
-          },
-        },
-      });
-
-      if (signUpError) {
-        setError(signUpError.message);
-        return;
-      }
-
-      if (data.user) {
-        // Redirigir a completar perfil con el tipo de usuario
-        router.push(`/completar-perfil?type=${userType}&user=${data.user.id}`);
-      }
+      const userId = crypto.randomUUID();
+      const userData = { ...formData, userType, userId };
+      localStorage.setItem(`cazual_user_${userId}`, JSON.stringify(userData));
+      router.push(`/completar-perfil?type=${userType}&userId=${userId}`);
     } catch (err) {
-      setError("Error al crear la cuenta. Intenta de nuevo.");
+      const message =
+        err instanceof Error ? err.message : "Error al crear la cuenta. Intenta de nuevo.";
+      setError(message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-background text-text pb-24 sm:pb-28">
+    <main className="min-h-screen bg-background text-text">
       <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
         <div className="mb-8 rounded-[2rem] border border-white/10 bg-card/80 p-4 shadow-glow">
           <div className="space-y-3">
             <div>
-              <p className="text-xs uppercase tracking-[0.4em] text-premium">
+              <p className="text-xs uppercase tracking-[0.35em] text-premium">
                 Registro
               </p>
               <h1 className="mt-1 text-3xl font-semibold leading-tight text-white">

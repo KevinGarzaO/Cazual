@@ -14,7 +14,7 @@ export default function ReviewCard({
   date,
 }: ReviewCardProps) {
   return (
-    <div className="rounded-[1.75rem] border border-white/10 bg-black/40 p-6 sm:p-6 md:p-8 overflow-visible w-full box-border">
+    <div className="rounded-[2rem] border border-white/10 bg-black/40 p-6 sm:p-6 md:p-8 overflow-visible w-full box-border">
       <div className="flex flex-col gap-3">
         <div>
           <p className="text-base font-semibold text-white">{title}</p>

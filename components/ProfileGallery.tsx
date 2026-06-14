@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Maximize2, X } from "lucide-react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ProfileGalleryProps {
   images: string[];
@@ -11,26 +11,28 @@ interface ProfileGalleryProps {
 
 export default function ProfileGallery({ images, name }: ProfileGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [zoomed, setZoomed] = useState(false);
 
-  const openImage = (index: number) => {
-    setSelectedIndex(index);
-    setZoomed(false);
+  const openImage = (index: number) => setSelectedIndex(index);
+  const closeModal = () => setSelectedIndex(null);
+
+  const goPrev = () => {
+    setSelectedIndex((prev) =>
+      prev !== null ? (prev - 1 + images.length) % images.length : null,
+    );
   };
 
-  const closeModal = () => {
-    setSelectedIndex(null);
-    setZoomed(false);
+  const goNext = () => {
+    setSelectedIndex((prev) =>
+      prev !== null ? (prev + 1) % images.length : null,
+    );
   };
-
-  const selectedImage = selectedIndex !== null ? images[selectedIndex] : null;
 
   return (
     <>
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-base uppercase tracking-[0.5em] text-premium">
+            <p className="text-base uppercase tracking-[0.35em] text-premium">
               Galería
             </p>
             <p className="mt-1 text-sm text-textSecondary">Fotos recientes</p>
@@ -38,23 +40,23 @@ export default function ProfileGallery({ images, name }: ProfileGalleryProps) {
           <p className="text-sm font-semibold text-white">+{images.length}</p>
         </div>
 
-        <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {images.map((image, index) => (
             <button
-              key={image}
+              key={`${image}-${index}`}
               type="button"
               onClick={() => openImage(index)}
-              className="group relative min-w-[45%] sm:min-w-[220px] flex-shrink-0 overflow-hidden rounded-[2rem] border border-white/10 bg-black/10 transition hover:border-premium/50 hover:shadow-[0_20px_60px_rgba(0,0,0,0.25)]"
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-black/10 transition hover:border-premium/50 aspect-[3/4]"
             >
               <Image
                 src={image}
-                alt={`${name} gallery ${index + 1}`}
-                width={360}
-                height={500}
-                className="h-56 w-full object-cover transition duration-300 group-hover:scale-105"
+                alt={`${name} ${index + 1}`}
+                fill
+                className="object-cover transition duration-300 group-hover:scale-105"
+                sizes="(max-width: 640px) 50vw, 33vw"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              <div className="pointer-events-none absolute bottom-3 left-3 rounded-full border border-white/10 bg-black/40 px-3 py-1 text-xs uppercase tracking-[0.3em] text-white">
+              <div className="pointer-events-none absolute bottom-2 left-2 rounded-full border border-white/10 bg-black/60 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white backdrop-blur-sm">
                 Ver
               </div>
             </button>
@@ -62,36 +64,51 @@ export default function ProfileGallery({ images, name }: ProfileGalleryProps) {
         </div>
       </div>
 
-      {selectedImage ? (
+      {selectedIndex !== null && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
           <div className="absolute inset-0" onClick={closeModal} />
-          <div className="relative z-10 max-h-[90vh] w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-black/95">
-            <button
-              type="button"
-              onClick={closeModal}
-              className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white transition hover:bg-white/10"
-            >
-              <X className="h-5 w-5" />
-            </button>
-            <button
-              type="button"
-              onClick={() => setZoomed((current) => !current)}
-              className="absolute right-4 top-20 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20"
-            >
-              <Maximize2 className="h-4 w-4 text-premium" />
-              {zoomed ? "Reducir" : "Ampliar"}
-            </button>
-            <div className="relative h-[75vh] w-full">
+
+          <button
+            type="button"
+            onClick={closeModal}
+            className="absolute right-4 top-4 z-20 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white transition hover:bg-white/10"
+          >
+            <X className="h-5 w-5" />
+          </button>
+
+          <button
+            type="button"
+            onClick={goPrev}
+            className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/10 bg-black/70 p-3 text-white transition hover:bg-white/10"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+
+          <button
+            type="button"
+            onClick={goNext}
+            className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/10 bg-black/70 p-3 text-white transition hover:bg-white/10"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+
+          <div className="relative z-10 max-h-[85vh] w-full max-w-4xl">
+            <div className="relative h-[70vh] w-full">
               <Image
-                src={selectedImage}
-                alt={`${name} enlarged gallery image`}
+                src={images[selectedIndex]}
+                alt={`${name} ${selectedIndex + 1}`}
                 fill
-                className={`object-contain transition-transform duration-300 ${zoomed ? "scale-110" : "scale-100"}`}
+                className="object-contain"
+                sizes="90vw"
+                priority
               />
             </div>
+            <p className="mt-3 text-center text-sm text-textSecondary">
+              {selectedIndex + 1} / {images.length}
+            </p>
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import "./globals.css";
 import { Providers } from "./providers";
 
@@ -33,6 +34,7 @@ export const viewport = {
 };
 
 import { BottomNav } from "@/components/BottomNav";
+import { TopBar } from "@/components/TopBar";
 
 export default function RootLayout({
   children,
@@ -41,9 +43,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="min-h-screen pb-24 sm:pb-28">
+      <body className="min-h-screen bg-background">
         <Providers>
-          {children}
+          <Suspense fallback={null}>
+            <TopBar />
+          </Suspense>
+          <div className="pt-14 pb-24 sm:pb-28">{children}</div>
           <BottomNav />
         </Providers>
       </body>

@@ -2,16 +2,17 @@
 
 import { useMemo } from "react";
 import { ProfileCard } from "@/components/ProfileCard";
-import { profiles } from "@/lib/profiles";
+import { useAllProfiles } from "@/lib/profiles";
 import { useFavoritesStore } from "@/lib/useFavoritesStore";
 import Link from "next/link";
 
 export default function FavoritesPage() {
   const favorites = useFavoritesStore((state) => state.favorites);
 
+  const allProfiles = useAllProfiles();
   const favoriteProfiles = useMemo(
-    () => profiles.filter((profile) => favorites.includes(profile.slug)),
-    [favorites],
+    () => allProfiles.filter((profile) => favorites.includes(profile.slug)),
+    [allProfiles, favorites],
   );
 
   return (

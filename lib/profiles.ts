@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 export interface Profile {
   slug: string;
   name: string;
@@ -13,13 +15,13 @@ export interface Profile {
   reviews: number;
   rating: number;
   measurements?: {
-    height?: string; // e.g. "170 cm"
+    height?: string;
     bust?: string;
-    cupSize?: string; // e.g. "B", "C"
+    cupSize?: string;
     waist?: string;
     hips?: string;
-    pantSize?: string; // talla de pantalón / jeans
-    dressSize?: string; // talla de vestido
+    pantSize?: string;
+    dressSize?: string;
     weight?: string;
   };
   body?: {
@@ -27,7 +29,7 @@ export interface Profile {
     skinType?: string;
     hairColor?: string;
     eyeColor?: string;
-    build?: string; // e.g. "Delgada", "Rellenita", "Voluptuosa"
+    build?: string;
     voluptuous?: boolean;
   };
   personality?: string[];
@@ -58,8 +60,8 @@ export const profiles: Profile[] = [
       "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=900&q=80",
       "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=80",
       "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80",
     ],
     reviews: 128,
     rating: 5,
@@ -188,6 +190,92 @@ export const profiles: Profile[] = [
   },
 ];
 
+function calcAge(birthDate: string): number {
+  if (!birthDate) return 0;
+  const birth = new Date(birthDate);
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+  return age;
+}
+
+function localStorageProfileToProfile(data: any, userId: string): Profile {
+  const slug = `user-${userId}`;
+  const age = data.birthDate ? calcAge(data.birthDate) : 0;
+  return {
+    slug,
+    name: data.name || "Usuario",
+    age,
+    city: data.city || "Ciudad no especificada",
+    location: data.city || "Ubicación no especificada",
+    score: 50,
+    tags: ["Nuevo"],
+    description: data.description || "",
+    services: data.services || [],
+    image: data.image || "",
+    gallery: data.gallery || [],
+    reviews: 0,
+    rating: 0,
+    measurements: data.height || data.bust || data.waist ? {
+      height: data.height,
+      bust: data.bust,
+      cupSize: data.cupSize,
+      waist: data.waist,
+      hips: data.hips,
+      pantSize: data.pantSize,
+      dressSize: data.dressSize,
+      weight: data.weight,
+    } : undefined,
+    body: data.skinTone || data.hairColor ? {
+      skinTone: data.skinTone,
+      skinType: data.skinType,
+      hairColor: data.hairColor,
+      eyeColor: data.eyeColor,
+      build: data.build,
+    } : undefined,
+    personality: data.personality || [],
+    personalityDetails: {
+      hobbies: data.hobbies || [],
+      values: data.values || [],
+      dealbreakers: data.dealbreakers || [],
+      languages: data.languages || [],
+    },
+  };
+}
+
+export function getLocalStorageProfiles(): Profile[] {
+  if (typeof window === "undefined") return [];
+  const result: Profile[] = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key?.startsWith("cazual_profile_")) {
+      const userId = key.replace("cazual_profile_", "");
+      const raw = localStorage.getItem(key);
+      if (raw) {
+        try {
+          const data = JSON.parse(raw);
+          result.push(localStorageProfileToProfile(data, userId));
+        } catch {}
+      }
+    }
+  }
+  return result;
+}
+
+export function getAllProfiles(): Profile[] {
+  return [...profiles, ...getLocalStorageProfiles()];
+}
+
+export function useAllProfiles(): Profile[] {
+  const [all, setAll] = useState<Profile[]>(() => [...profiles]);
+  useEffect(() => {
+    setAll(getAllProfiles());
+  }, []);
+  return all;
+}
+
 export function getProfileBySlug(slug: string) {
-  return profiles.find((profile) => profile.slug === slug);
+  const all = getAllProfiles();
+  return all.find((profile) => profile.slug === slug) || null;
 }

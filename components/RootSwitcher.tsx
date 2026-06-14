@@ -1,14 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { HomeHero } from "@/components/HomeHero";
 import { ExploreContent } from "@/components/ExploreContent";
 import { ProfileCarousel } from "@/components/ProfileCarousel";
-import { profiles } from "@/lib/profiles";
+import { useAllProfiles } from "@/lib/profiles";
 import { useSessionStore } from "@/lib/sessionStore";
 
 export default function RootSwitcher() {
-  const { hasAccount } = useSessionStore();
+  const { hasAccount, hydrated, hydrate } = useSessionStore();
+
+  useEffect(() => { hydrate(); }, [hydrate]);
+
+  const allProfiles = useAllProfiles();
 
   if (hasAccount) {
     return <ExploreContent />;
@@ -22,13 +27,13 @@ export default function RootSwitcher() {
         <section className="mt-10 space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-3xl font-semibold">Mejor calificadas</h2>
-            <button className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-text transition hover:bg-white/10">
+            <Link href="/explorar" className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-text transition hover:bg-white/10">
               Ver todas
-            </button>
+            </Link>
           </div>
 
           <div className="flex gap-4 overflow-x-auto pb-2 pt-2">
-            {profiles.slice(0, 4).map((profile) => (
+            {allProfiles.slice(0, 4).map((profile) => (
               <Link
                 key={profile.slug}
                 href={`/profile/${profile.slug}`}
@@ -58,7 +63,7 @@ export default function RootSwitcher() {
         <div className="mt-14">
           <ProfileCarousel
             title="Perfiles destacados"
-            profiles={profiles.slice(0, 4)}
+            profiles={allProfiles.slice(0, 4)}
           />
         </div>
       </div>

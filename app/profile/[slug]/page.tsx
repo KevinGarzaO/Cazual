@@ -6,8 +6,10 @@ import PhysicalAndPersonality from "@/components/PhysicalAndPersonality";
 import ReviewCard from "@/components/ReviewCard";
 import Star from "@/components/StarFilled";
 import FavoriteButton from "@/components/FavoriteButton";
+import ContactButton from "@/components/ContactButton";
 import { getProfileBySlug, profiles } from "@/lib/profiles";
 import { notFound } from "next/navigation";
+import UserProfileFallback from "./UserProfileFallback";
 
 interface ProfilePageProps {
   params: {
@@ -21,7 +23,9 @@ export function generateStaticParams() {
 
 export default function ProfilePage({ params }: ProfilePageProps) {
   const profile = getProfileBySlug(params.slug);
-  if (!profile) return notFound();
+  if (!profile) {
+    return <UserProfileFallback slug={params.slug} />;
+  }
 
   const extraReviews = [
     "Muy profesional, estuvo atenta a cada detalle.",
@@ -48,7 +52,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   ];
 
   return (
-    <main className="min-h-screen bg-background text-text">
+    <main className="-mt-14 min-h-screen bg-background text-text">
       <div className="mx-auto max-w-3xl px-4 py-4 sm:px-6">
         <Link
           href="/"
@@ -79,7 +83,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     </p>
                   </div>
 
-                  <div className="flex flex-col items-end gap-3">
+                  <div className="flex flex-col items-start gap-3">
                     <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-sm text-white">
                       <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-premium text-black">
                         <Star className="h-4 w-4" />
@@ -98,7 +102,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
           <div className="space-y-6 p-6">
             <div>
-              <p className="text-base uppercase tracking-[0.5em] text-premium">
+              <p className="text-base uppercase tracking-[0.35em] text-premium">
                 Sobre {profile.name}
               </p>
               <p className="mt-4 max-w-2xl text-sm leading-8 text-textSecondary sm:text-base">
@@ -119,7 +123,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
             <div className="grid gap-6 sm:grid-cols-2">
               <div>
-                <p className="text-base uppercase tracking-[0.5em] text-premium">
+                <p className="text-base uppercase tracking-[0.35em] text-premium">
                   Servicios
                 </p>
                 <div className="mt-4 flex flex-wrap gap-3">
@@ -138,14 +142,14 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </div>
 
               <div>
-                <p className="text-base uppercase tracking-[0.5em] text-premium">
+                <p className="text-base uppercase tracking-[0.35em] text-premium">
                   Lo que ofrece
                 </p>
                 <div className="mt-4 space-y-3 text-sm text-white">
-                  <div className="rounded-[1.75rem] border border-white/10 bg-white/5 px-4 py-3 shadow-black/10 transition hover:bg-white/10">
+                  <div className="rounded-[2rem] border border-white/10 bg-white/5 px-4 py-3 shadow-black/10 transition hover:bg-white/10">
                     Experiencias de alto nivel
                   </div>
-                  <div className="rounded-[1.75rem] border border-white/10 bg-white/5 px-4 py-3 shadow-black/10 transition hover:bg-white/10">
+                  <div className="rounded-[2rem] border border-white/10 bg-white/5 px-4 py-3 shadow-black/10 transition hover:bg-white/10">
                     Acompañamiento discreto
                   </div>
                 </div>
@@ -162,7 +166,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             <ProfileGallery images={profile.gallery} name={profile.name} />
 
             <div>
-              <p className="text-base uppercase tracking-[0.5em] text-premium">
+              <p className="text-base uppercase tracking-[0.35em] text-premium">
                 Resumen de reviews
               </p>
               <div className="mt-4 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
@@ -297,7 +301,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             <div className="space-y-4 pt-3">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-base uppercase tracking-[0.5em] text-premium">
+                  <p className="text-base uppercase tracking-[0.35em] text-premium">
                     Reviews
                   </p>
                   <p className="mt-2 text-sm text-textSecondary">
@@ -331,10 +335,8 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </div>
         </section>
 
-        <div className="sticky bottom-4 left-0 right-0 z-20 mx-auto mt-6 flex w-full max-w-3xl justify-center px-4 sm:px-6">
-          <button className="w-full rounded-full bg-premium px-6 py-4 text-sm font-semibold text-black shadow-xl shadow-premium/30 transition hover:brightness-105 sm:max-w-[420px]">
-            Contactar
-          </button>
+        <div className="sticky bottom-20 left-0 right-0 z-20 mx-auto mt-6 flex w-full max-w-3xl justify-center px-4 sm:bottom-24 sm:px-6">
+          <ContactButton slug={profile.slug} />
         </div>
       </div>
     </main>
