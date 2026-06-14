@@ -5,6 +5,7 @@ import ProfileGallery from "@/components/ProfileGallery";
 import PhysicalAndPersonality from "@/components/PhysicalAndPersonality";
 import ReviewCard from "@/components/ReviewCard";
 import Star from "@/components/StarFilled";
+import FavoriteButton from "@/components/FavoriteButton";
 import { getProfileBySlug, profiles } from "@/lib/profiles";
 import { notFound } from "next/navigation";
 
@@ -78,14 +79,17 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     </p>
                   </div>
 
-                  <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-sm text-white">
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-premium text-black">
-                      <Star className="h-4 w-4" />
-                    </span>
-                    <span>{profile.rating.toFixed(1)}</span>
-                    <span className="text-textSecondary">
-                      {profile.reviews} reseñas
-                    </span>
+                  <div className="flex flex-col items-end gap-3">
+                    <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-sm text-white">
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-premium text-black">
+                        <Star className="h-4 w-4" />
+                      </span>
+                      <span>{profile.rating.toFixed(1)}</span>
+                      <span className="text-textSecondary">
+                        {profile.reviews} reseñas
+                      </span>
+                    </div>
+                    <FavoriteButton slug={profile.slug} compact={false} />
                   </div>
                 </div>
               </div>

@@ -39,28 +39,11 @@ export function HomeHero() {
 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <Link
-              href="/explorar"
+              href="/registro"
               className="inline-flex items-center justify-center rounded-full bg-premium px-7 py-3 text-sm font-semibold text-black shadow-xl shadow-premium/20 transition hover:brightness-110"
             >
-              Explorar perfiles
+              Crear cuenta
             </Link>
-            <Link
-              href="/registro"
-              className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-7 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-            >
-              Crear perfil
-            </Link>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            {searchChips.map((chip) => (
-              <button
-                key={chip}
-                className="rounded-full border border-white/10 bg-black/40 px-5 py-3 text-left text-sm font-semibold text-white shadow-inner shadow-black/20 transition hover:bg-white/5"
-              >
-                {chip}
-              </button>
-            ))}
           </div>
         </div>
       </div>

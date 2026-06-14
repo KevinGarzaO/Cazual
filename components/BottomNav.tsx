@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Home, Search, MessageCircle, Heart, User } from "lucide-react";
+import { Search, MessageCircle, Heart, User } from "lucide-react";
 
 const navItems = [
-  { label: "Explorar", href: "/explorar", icon: Search },
+  { label: "Explorar", href: "/", icon: Search },
   { label: "Favoritos", href: "/favoritos", icon: Heart },
   { label: "Mensajes", href: "/mensajes", icon: MessageCircle },
   { label: "Cuenta", href: "/cuenta", icon: User },

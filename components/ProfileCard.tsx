@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, ShieldCheck, Star } from "lucide-react";
+import { ShieldCheck, Star } from "lucide-react";
+import FavoriteButton from "@/components/FavoriteButton";
 
 interface ProfileCardProps {
   slug: string;
@@ -62,9 +65,12 @@ export function ProfileCard({
             </span>
           ))}
         </div>
-        <div className="flex items-center gap-3 text-sm text-textSecondary">
-          <Heart className="h-4 w-4 text-danger" />
-          <span>Contacto premium</span>
+        <div className="flex items-center justify-between gap-3 text-sm text-textSecondary">
+          <div className="inline-flex items-center gap-2 text-textSecondary">
+            <Star className="h-4 w-4 text-premium" />
+            <span>{score}</span>
+          </div>
+          <FavoriteButton slug={slug} compact />
         </div>
       </div>
     </Link>
