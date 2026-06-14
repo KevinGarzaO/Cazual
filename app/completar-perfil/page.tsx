@@ -1,10 +1,8 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabase } from "@/lib/supabaseClient";
 
 const providerServices = [
   "Acompañante",
@@ -15,6 +13,14 @@ const providerServices = [
 ];
 
 export default function CompletarPerfilPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background" />}>
+      <CompletarPerfilForm />
+    </Suspense>
+  );
+}
+
+function CompletarPerfilForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const userType = (searchParams.get("type") || "solicitante") as
@@ -59,7 +65,7 @@ export default function CompletarPerfilPage() {
     try {
       const {
         data: { user },
-      } = await supabase.auth.getUser();
+      } = await getSupabase().auth.getUser();
 
       if (!user) {
         setError("Usuario no autenticado");

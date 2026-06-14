@@ -8,7 +8,7 @@ import { profiles } from "@/lib/profiles";
 import { useSessionStore } from "@/lib/sessionStore";
 
 export default function RootSwitcher() {
-  const { hasAccount, login, logout } = useSessionStore();
+  const { hasAccount } = useSessionStore();
 
   if (hasAccount) {
     return <ExploreContent />;

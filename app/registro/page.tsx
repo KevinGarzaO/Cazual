@@ -2,17 +2,9 @@
 
 export const dynamic = "force-dynamic";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
-
-const providerServices = [
-  "Acompañante",
-  "Cenas",
-  "Viajes",
-  "Eventos",
-  "Bienestar",
-];
+import { getSupabase } from "@/lib/supabaseClient";
 
 export default function RegistrationPage() {
   const router = useRouter();
@@ -40,7 +32,7 @@ export default function RegistrationPage() {
 
     try {
       // Registrar usuario en Supabase Auth
-      const { data, error: signUpError } = await supabase.auth.signUp({
+      const { data, error: signUpError } = await getSupabase().auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
