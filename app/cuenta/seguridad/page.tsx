@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ShieldCheck, Eye, EyeOff } from "lucide-react";
+import { useToast } from "@/components/Toast";
 
 interface UserData {
   name: string;
@@ -15,6 +16,7 @@ interface UserData {
 
 export default function SeguridadPage() {
   const router = useRouter();
+  const { toast } = useToast();
   const [userId, setUserId] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", email: "", phone: "", password: "", newPassword: "", confirmPassword: "" });
   const [showPw, setShowPw] = useState(false);
@@ -80,9 +82,11 @@ export default function SeguridadPage() {
       }
 
       setSaved(true);
+      toast("Datos actualizados correctamente", "success");
       setTimeout(() => setSaved(false), 2000);
     } catch {
       setError("Error al guardar. Intenta de nuevo.");
+      toast("Error al guardar", "error");
     } finally {
       setSaving(false);
     }

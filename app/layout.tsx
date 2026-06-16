@@ -35,6 +35,7 @@ export const viewport = {
 
 import { BottomNav } from "@/components/BottomNav";
 import { TopBar } from "@/components/TopBar";
+import { ToastProvider } from "@/components/Toast";
 
 export default function RootLayout({
   children,
@@ -45,11 +46,13 @@ export default function RootLayout({
     <html lang="es">
       <body className="min-h-screen bg-background">
         <Providers>
-          <Suspense fallback={null}>
-            <TopBar />
-          </Suspense>
-          <div className="pt-14 pb-24 sm:pb-28">{children}</div>
-          <BottomNav />
+          <ToastProvider>
+            <Suspense fallback={null}>
+              <TopBar />
+            </Suspense>
+            <div className="animate-fadeIn pt-14 pb-24 sm:pb-28">{children}</div>
+            <BottomNav />
+          </ToastProvider>
         </Providers>
       </body>
     </html>

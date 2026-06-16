@@ -78,19 +78,33 @@ function MessagesContent() {
           </div>
 
           <div className="flex-1 space-y-4 overflow-y-auto px-4 pb-20 pt-4 sm:px-6">
-            {messages.map((msg, i) => (
-              <div key={i} className={`flex ${msg.sent ? "justify-end" : "justify-start"}`}>
-                <div
-                  className={`max-w-[75%] rounded-[1.75rem] px-4 py-3 text-sm ${
-                    msg.sent
-                      ? "bg-premium text-black"
-                      : "border border-white/10 bg-white/5 text-white"
-                  }`}
-                >
-                  {msg.text}
+            {messages.length === 0 ? (
+              <div className="flex h-full flex-col items-center justify-center text-center">
+                <div className="relative mb-6 h-32 w-32">
+                  <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-premium/20 to-premium/5">
+                    <MessageCircle className="h-16 w-16 text-premium/40" />
+                  </div>
                 </div>
+                <p className="text-lg font-semibold text-white">Sin mensajes aún</p>
+                <p className="mt-2 max-w-xs text-sm text-textSecondary">
+                  Envía un mensaje para iniciar la conversación con {contactName}.
+                </p>
               </div>
-            ))}
+            ) : (
+              messages.map((msg, i) => (
+                <div key={i} className={`flex ${msg.sent ? "justify-end" : "justify-start"}`}>
+                  <div
+                    className={`max-w-[75%] rounded-[1.75rem] px-4 py-3 text-sm ${
+                      msg.sent
+                        ? "bg-premium text-black"
+                        : "border border-white/10 bg-white/5 text-white"
+                    }`}
+                  >
+                    {msg.text}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
 
           <div className="fixed bottom-0 left-0 right-0 z-[60] border-t border-white/10 bg-background/95 px-4 py-3 backdrop-blur-xl sm:px-6">

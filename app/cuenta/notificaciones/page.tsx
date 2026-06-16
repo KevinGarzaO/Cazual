@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Bell, MessageCircle, Heart, Sparkles, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Bell, MessageCircle, Heart, Sparkles } from "lucide-react";
+import { useToast } from "@/components/Toast";
 
 interface NotificationSettings {
   messages: boolean;
@@ -19,6 +20,7 @@ const defaultSettings: NotificationSettings = {
 };
 
 export default function NotificacionesPage() {
+  const { toast } = useToast();
   const [settings, setSettings] = useState<NotificationSettings>(defaultSettings);
   const [saved, setSaved] = useState(false);
 
@@ -39,6 +41,7 @@ export default function NotificacionesPage() {
   const handleSave = () => {
     localStorage.setItem("cazual_notification_settings", JSON.stringify(settings));
     setSaved(true);
+    toast("Configuración guardada", "success");
     setTimeout(() => setSaved(false), 2000);
   };
 
